@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single" android:id="@+id/group1" >
+
+        <item
+            android:id="@+id/menu_scanning"
+            android:title="@string/scanning"/>
+
+        <item
+            android:id="@+id/menu_search_online"
+            android:title="@string/search_online"/>
+
+        <item
+            android:id="@+id/menu_search_local"
+            android:title="@string/search_local"/>
+
+        <item
+            android:id="@+id/menu_about"
+            android:title="@string/about"/>
+
+
+    </group>
+
+    <group android:checkableBehavior="single" android:id="@+id/group2">
+        <item
+            android:id="@+id/menu_logout"
+            android:title="@string/logout"/>
+    </group>
+</menu>
