@@ -12,7 +12,6 @@ import com.example.wen.wenbook.bean.WeChatUser;
 import com.example.wen.wenbook.common.Constant;
 import com.example.wen.wenbook.data.http.ApiService;
 import com.example.wen.wenbook.data.model.LoginModel;
-import com.example.wen.wenbook.di.component.DaggerLoginComponent;
 import com.example.wen.wenbook.di.module.LoginModule;
 import com.example.wen.wenbook.presenter.contract.LonginContract;
 import com.example.wen.wenbook.presenter.impl.LoginPresenter;
@@ -50,9 +49,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler ,Lon
         MyApplication.getApi().handleIntent(getIntent(), this);
 
         mLoginPresenter = new LoginPresenter(new LoginModel(this,provideRetrofit(provideOkHttpClient()).create(ApiService.class)),this);
-     /*   //注入
-        MyApplication application = (MyApplication) getApplication();
-        DaggerLoginComponent.builder().appComponent(application.getAppComponent()).loginModule(new LoginModule(this)).build().injectWxEntryActivity(this);*/
+
     }
 
 
@@ -102,9 +99,20 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler ,Lon
     }
 
     @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void dismissLoading() {
+
+    }
+
+    @Override
     public void showError(String errorMsg) {
 
     }
+
 
     public OkHttpClient provideOkHttpClient(){
 

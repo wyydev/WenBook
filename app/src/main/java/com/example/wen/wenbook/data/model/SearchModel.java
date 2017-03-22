@@ -27,7 +27,7 @@ public class SearchModel implements SearchBookContract.ISearchBookModel {
     }
 
     @Override
-    public Observable<DoubanBookBean> searchOnline(String bookName) {
+    public Observable<DoubanBookBean> searchOnline(String bookName,int start) {
 
         // URLencode
         try {
@@ -35,7 +35,7 @@ public class SearchModel implements SearchBookContract.ISearchBookModel {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return mApiService.searchBook(bookName);
+        return mApiService.searchBook(bookName,start);
     }
 
     @Override

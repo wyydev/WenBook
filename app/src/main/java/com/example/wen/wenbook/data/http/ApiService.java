@@ -31,5 +31,10 @@ public interface ApiService {
     Observable<WeChatUser> weChatUser(@QueryMap Map<String,String> options);
 
     @GET("search")
-    Observable<DoubanBookBean> searchBook(@Query("q") String q);
+    Observable<DoubanBookBean> searchBook(@Query("q") String q ,@Query("start") int start);
+
+    @GET("isbn/{isbn}")
+    Observable<DoubanBook> searchBookFromIsbn(@Path("isbn") String isbn);
+
+
 }

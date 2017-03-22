@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -60,13 +60,20 @@
 
     </RelativeLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_search_book_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_book_recycler_view"
+            android:id="@+id/fragment_search_book_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:padding="8dp" />
 
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
-</RelativeLayout>
+
+</LinearLayout>

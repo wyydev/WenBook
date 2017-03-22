@@ -96,6 +96,7 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
 
     @Override
     public void setUpActivityComponent(AppComponent appComponent) {
+
         DaggerLoginComponent.builder().appComponent(appComponent).loginModule(new LoginModule(this)).build().injectMainActivity(this);
     }
 
@@ -173,6 +174,16 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
 
     @Override
     public void showUser(WeChatUser user) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void dismissLoading() {
 
     }
 

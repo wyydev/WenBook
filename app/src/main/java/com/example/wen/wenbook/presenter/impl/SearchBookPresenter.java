@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.wen.wenbook.bean.Book;
 import com.example.wen.wenbook.bean.DoubanBook;
+import com.example.wen.wenbook.bean.DoubanBookBean;
 import com.example.wen.wenbook.common.Constant;
 import com.example.wen.wenbook.common.rx.DoubanBookTransformer;
 import com.example.wen.wenbook.common.util.BookUtils;
@@ -32,16 +33,26 @@ public class SearchBookPresenter extends BasePresenter<SearchBookContract.ISearc
         super(model, view);
     }
 
-    public void serchBook(int searchType,String bookName){
-        // URLencode
-        try {
-            bookName = URLEncoder.encode(bookName, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    public void searchBook(int searchType, String bookName, final int start){
+
 
         switch (searchType){
             case Constant.SEARCH_LOCAL:
+
+                // URLencode
+                try {
+                  //  bookName = URLEncoder.encode(bookName, "UTF-8");
+
+                    if (bookName != null) {
+                        // 用默认字符编码解码字符串。
+                        byte[] bs = bookName.getBytes();
+                        // 用新的字符编码生成字符串
+                        bookName = new String(bs, "UTF-8");
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
                 mModel.searchLocal(bookName).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Book>>() {
@@ -56,7 +67,7 @@ public class SearchBookPresenter extends BasePresenter<SearchBookContract.ISearc
 
                         Log.d("SearchBookPresenter",bookList.toString());
                             if (bookList != null){
-                                mView.showResult(bookList);
+                                mView.showResult(bookList,bookList.size());
                             }
                     }
 
@@ -68,12 +79,13 @@ public class SearchBookPresenter extends BasePresenter<SearchBookContract.ISearc
                     @Override
                     public void onComplete() {
                         mView.dismissLoading();
+                        mView.onLoadMoreComplete();
                     }
                 });
                 break;
 
             case Constant.SEARCH_NET:
-                mModel.searchOnline(bookName)
+              /*  mModel.searchOnline(bookName,start)
                 .compose(DoubanBookTransformer.transform())
                         .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<List<DoubanBook>>() {
@@ -99,6 +111,60 @@ public class SearchBookPresenter extends BasePresenter<SearchBookContract.ISearc
                             @Override
                             public void onComplete() {
                                 mView.dismissLoading();
+                            }
+                        });*/
+
+                // URLencode
+                try {
+                    //bookName = URLEncoder.encode(bookName, "UTF-8");
+
+                    if (bookName != null) {
+                        // 用默认字符编码解码字符串。
+                        byte[] bs = bookName.getBytes();
+                        // 用新的字符编码生成字符串
+                        bookName = new String(bs, "UTF-8");
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                mModel.searchOnline(bookName,start).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<DoubanBookBean>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                if (start == 0)
+                                mView.showLoading();
+                            }
+
+                            @Override
+                            public void onNext(DoubanBookBean value) {
+
+                                if (start == 0)
+                                mView.dismissLoading();
+
+                                if (value != null){
+                                    mView.showResult(BookUtils.parseAll(value.getBooks()),value.getTotal());
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                if (start == 0)
+                                mView.dismissLoading();
+
+                                mView.showError(e.getMessage());
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                if (start == 0)
+                                mView.dismissLoading();
+
+                                mView.onLoadMoreComplete();
                             }
                         });
 

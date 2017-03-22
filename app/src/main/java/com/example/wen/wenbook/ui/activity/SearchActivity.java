@@ -1,17 +1,24 @@
 package com.example.wen.wenbook.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.wen.wenbook.R;
 import com.example.wen.wenbook.bean.Book;
 import com.example.wen.wenbook.common.font.WenFont;
@@ -27,13 +34,14 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Created by wen on 2017/3/21.
  */
 
-public class SearchActivity extends BaseActivity<SearchBookPresenter> implements SearchBookContract.SearchView{
+public class SearchActivity extends BaseActivity<SearchBookPresenter> implements SearchBookContract.SearchView, BaseQuickAdapter.RequestLoadMoreListener {
 
     public static int SEARCH_LOCAL = 0;
     public static int SEARCH_NET = 1;
@@ -46,15 +54,27 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     AVLoadingIndicatorView mAvLoadingIndicatorView;
     @BindView(R.id.loadView)
     RelativeLayout mLoadView;
-    @BindView(R.id.search_book_recycler_view)
+    @BindView(R.id.fragment_search_book_recycler)
     RecyclerView mRecyclerView;
+    @BindView(R.id.fragment_search_book_swipe)
+    SwipeRefreshLayout mSwipeRefrshLayout;
+
 
     private int search_type = SEARCH_LOCAL;
-    private String searchBookName="";
+    private String searchBookName = "";
+
     private BookSearchAdapter mBookSearchAdapter;
 
     // 图书搜索结果总条数
-    static int total = 10;
+    private static int total = 10;
+
+    private static int currentCount = 0;
+
+    private static int start = 0;
+
+    // RecyclerView 线性布局管理器
+    private LinearLayoutManager manager;
+
 
     @Override
     public int setLayoutId() {
@@ -71,6 +91,29 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
 
         initActionBarAndTitle();
 
+        mBookSearchAdapter = new BookSearchAdapter(this);
+        mBookSearchAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mBookSearchAdapter.setOnLoadMoreListener(this, mRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                   getData();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mSwipeRefrshLayout.setColorSchemeResources(R.color.google_blue, R.color.google_red, R.color.google_green, R.color.google_yellow);
+        mSwipeRefrshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                    getData();
+            }
+        });
 
     }
 
@@ -90,21 +133,30 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
 
 
     @OnClick(R.id.ib_search)
-    public void clickToSearch(){
+    public void clickToSearch() {
         // 关闭软键盘
         closeKeyboard();
+
+        getData();
+
+
+    }
+
+    private void getData() {
+
 
         if (!mEtSearch.getText().toString().trim().isEmpty()) {
 
             searchBookName = mEtSearch.getText().toString().trim().replace(" ", "\b");
 
-             mPresenter.serchBook(search_type,searchBookName);
+            mBookSearchAdapter.getData().clear();
+            mBookSearchAdapter.notifyDataSetChanged();
 
+            mPresenter.searchBook(search_type, searchBookName, mBookSearchAdapter.getItemCount());
 
         } else {
             Toast.makeText(this, "请输入要搜索的内容", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     // 关闭软键盘
@@ -132,24 +184,73 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     @Override
     public void dismissLoading() {
         mLoadView.setVisibility(View.GONE);
+        mSwipeRefrshLayout.setRefreshing(false);
     }
 
     @Override
-    public void showResult(List<Book> bookList) {
+    public void showResult(final List<Book> bookList, int totalCount) {
 
-        mBookSearchAdapter = new BookSearchAdapter();
+        total = totalCount;
+        Log.d("SearchActivity", "total:" + total);
+
+
+        if (total == 0) {
+            Toast.makeText(this, "找不到图书", Toast.LENGTH_SHORT).show();
+        }
 
         mBookSearchAdapter.addData(bookList);
-        Toast.makeText(this, "搜索的内容大小:"+bookList.size(), Toast.LENGTH_SHORT).show();
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mRecyclerView.setAdapter(mBookSearchAdapter);
+        //是否允许开启上拉加载更多
+        mBookSearchAdapter.setEnableLoadMore(mBookSearchAdapter.getItemCount() < totalCount ? true : false);
 
+        if (start == 0) {
+            mRecyclerView.setAdapter(mBookSearchAdapter);
+            start = start + 1;
+        }
+
+        Log.d("SearchActivity", "start:" + start);
+
+    }
+
+    @Override
+    public void onLoadMoreComplete() {
+        mBookSearchAdapter.loadMoreComplete();
     }
 
     @Override
     public void showError(String errorMsg) {
-        Log.d("SearchActivity",errorMsg);
+        mBookSearchAdapter.loadMoreFail();
+        Toast.makeText(this, "errorMsg", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onLoadMoreRequested() {
+
+        if (mBookSearchAdapter.getItemCount() < total) {
+            mPresenter.searchBook(search_type, searchBookName, mBookSearchAdapter.getItemCount());
+        } else {
+            mBookSearchAdapter.loadMoreEnd();
+        }
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 }

@@ -5,4 +5,7 @@ package com.example.wen.wenbook.presenter;
  */
 
 public interface BaseView {
+    void showLoading();
+    void dismissLoading();
+    void showError(String errorMsg);
 }

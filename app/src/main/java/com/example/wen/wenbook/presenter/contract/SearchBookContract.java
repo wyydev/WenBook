@@ -15,14 +15,13 @@ import io.reactivex.Observable;
 
 public interface SearchBookContract {
     public interface ISearchBookModel{
-        Observable<DoubanBookBean> searchOnline(String bookName);
+        Observable<DoubanBookBean> searchOnline(String bookName,int start);
         Observable<List<Book>> searchLocal(String bookName);
     }
 
     public interface SearchView extends BaseView{
-        void showLoading();
-        void dismissLoading();
-        void showResult(List<Book> bookList);
-        void showError(String errorMsg);
+
+        void showResult(List<Book> bookList,int totalCount);
+        void onLoadMoreComplete();
     }
 }

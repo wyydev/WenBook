@@ -1,5 +1,7 @@
 package com.example.wen.wenbook.ui.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -10,7 +12,13 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.wen.wenbook.R;
 import com.example.wen.wenbook.bean.Book;
 import com.example.wen.wenbook.common.font.WenFont;
+import com.example.wen.wenbook.ui.activity.BookInfoActivity;
+import com.example.wen.wenbook.ui.activity.BookInfoAddActivity;
 import com.mikepenz.iconics.IconicsDrawable;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
 
 
 /**
@@ -19,12 +27,15 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 public class BookSearchAdapter extends BaseQuickAdapter<Book,BaseViewHolder>{
 
-    public BookSearchAdapter() {
+    private Context mContext;
+
+    public BookSearchAdapter(Context context) {
         super(R.layout.activity_search_book_item);
+        this.mContext = context;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Book item) {
+    protected void convert(BaseViewHolder helper, final Book item) {
        ImageView bookImage =  helper.getView(R.id.book_item_image);
         // 设置图片
         Glide.with(bookImage.getContext())
@@ -52,5 +63,26 @@ public class BookSearchAdapter extends BaseQuickAdapter<Book,BaseViewHolder>{
         } else {
             helper.setText(R.id.book_item_translator,item.getTranslator() + " 译");
         }
+
+        //CardView点击事件
+        helper.getView(R.id.book_item).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //到数据库查询是否存在该图书
+                List<Book> books = DataSupport.where("isbn13 = ?", item.getIsbn13()).find(Book.class);
+
+                // 如果图书已添加
+                if (books.size() > 0) {
+                    Intent intent = new Intent(mContext, BookInfoActivity.class);
+                    intent.putExtra("id", books.get(0).getId());
+                    mContext.startActivity(intent);
+                } else {
+                    // 图书未添加，跳转到添加页面
+                    Intent intent = new Intent(mContext, BookInfoAddActivity.class);
+                    intent.putExtra("ISBN", item.getIsbn13());
+                    mContext.startActivity(intent);
+                }
+            }
+        });
     }
 }

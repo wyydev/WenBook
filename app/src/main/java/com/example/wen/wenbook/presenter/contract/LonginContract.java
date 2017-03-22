@@ -21,6 +21,6 @@ public interface LonginContract {
 
     public interface LoginView extends BaseView{
         void showUser(WeChatUser user);
-        void showError(String errorMsg);
+
     }
 }
