@@ -14,4 +14,6 @@ public class Constant {
 
 
     public static final String BASE_URL = "https://api.douban.com/v2/book/";
+    public static final int SEARCH_LOCAL = 0;
+    public static final int SEARCH_NET = 1;
 }

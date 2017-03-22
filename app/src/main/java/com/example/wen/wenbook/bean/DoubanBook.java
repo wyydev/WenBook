@@ -1,5 +1,7 @@
 package com.example.wen.wenbook.bean;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 /**
@@ -355,5 +357,11 @@ public class DoubanBook {
         public String getTitle() {
             return title;
         }
+    }
+
+    @Override
+    public String toString() {
+
+        return new Gson().toJson(this);
     }
 }

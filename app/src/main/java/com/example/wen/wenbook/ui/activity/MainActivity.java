@@ -1,5 +1,6 @@
 package com.example.wen.wenbook.ui.activity;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.wen.wenbook.R;
 import com.example.wen.wenbook.bean.WeChatUser;
+import com.example.wen.wenbook.common.Constant;
 import com.example.wen.wenbook.common.font.WenFont;
 import com.example.wen.wenbook.di.component.AppComponent;
 import com.example.wen.wenbook.di.component.DaggerLoginComponent;
@@ -154,8 +156,9 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
             @Override
             public void onClick(View view) {
                 mFabMenu.close(true);
-               /* Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                intent.putExtra("search_type", Constant.SEARCH_NET);
+                startActivity(intent);
             }
         });
 

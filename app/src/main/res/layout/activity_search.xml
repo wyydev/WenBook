@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:paddingBottom="2dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="2dp">
+
+        <!--"@null"让光标颜色和text color一样-->
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:hint="请输入书名"
+            android:imeOptions="actionSearch"
+            android:padding="4dp"
+            android:lines="1"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#cccccc"
+            android:textCursorDrawable="@null" />
+
+        <ImageButton
+            android:id="@+id/ib_search"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="8dp"
+            android:background="@null"
+            android:padding="4dp"
+             />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/av_loading_indicator_view"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:indicator="Pacman"
+            app:indicator_color="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_book_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="8dp" />
+
+
+
+</RelativeLayout>

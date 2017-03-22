@@ -3,6 +3,9 @@ package com.example.wen.wenbook.common.util;
 import com.example.wen.wenbook.bean.Book;
 import com.example.wen.wenbook.bean.DoubanBook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by wen on 2017/3/21.
  */
@@ -80,5 +83,14 @@ public class BookUtils {
             }
         }
         return book_db;
+    }
+    
+    public static List<Book> parseAll(List<DoubanBook> doubanBookList){
+        List<Book> bookList= new ArrayList<>(doubanBookList.size());
+
+        for (DoubanBook doubanBook:doubanBookList) {
+            bookList.add(DoubanBook2Book(doubanBook));
+        }
+        return bookList;
     }
 }

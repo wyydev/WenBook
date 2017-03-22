@@ -13,6 +13,14 @@
     <color name="colorPrimaryContentFont">#444444</color>
     <color name="colorPrimaryContentBg">#f8f8f8</color>
 
+    <!-- 搜素结果 -->
+    <color name="book_item_points">#fbbc05</color>
+    <color name="book_item_price_bg">#fbbc05</color>
+    <color name="book_item_textpricecolor">#ffffff</color>
+    <color name="book_item_texttitlecolor">#111111</color>
+    <color name="book_item_textcontentcolor">#444444</color>
+    <color name="boo_item_icon">#bcbcbc</color>
+
     <!-- 悬浮按钮 -->
     <color name="fab_menu_colorNormal">@color/colorPrimary</color>
     <color name="fab_menu_colorPressed">@color/colorPrimaryDark</color>
