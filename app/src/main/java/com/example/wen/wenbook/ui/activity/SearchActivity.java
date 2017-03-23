@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -58,18 +59,18 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     RecyclerView mRecyclerView;
     @BindView(R.id.fragment_search_book_swipe)
     SwipeRefreshLayout mSwipeRefrshLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
 
     private int search_type = SEARCH_LOCAL;
+
     private String searchBookName = "";
 
     private BookSearchAdapter mBookSearchAdapter;
 
     // 图书搜索结果总条数
     private static int total = 10;
-
-
-    private static int start = 0;
 
     // RecyclerView 线性布局管理器
     private LinearLayoutManager manager;
@@ -93,30 +94,35 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
         mBookSearchAdapter = new BookSearchAdapter(this);
         mBookSearchAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mBookSearchAdapter.setOnLoadMoreListener(this, mRecyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        manager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(manager);
+
 
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                   getData();
+                    getData();
                     return true;
                 }
                 return false;
             }
         });
 
+
+
         mSwipeRefrshLayout.setColorSchemeResources(R.color.google_blue, R.color.google_red, R.color.google_green, R.color.google_yellow);
         mSwipeRefrshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                    getData();
+                getData();
             }
         });
 
     }
 
     private void initActionBarAndTitle() {
+        setSupportActionBar(mToolbar);
         // 返回按钮
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -127,7 +133,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
         getSupportActionBar().setElevation(0);*/
 
         // Activity标题
-        setTitle(search_type == SEARCH_LOCAL ? "本地查询" : "在线搜索");
+        mToolbar.setTitle(search_type == SEARCH_LOCAL ? "本地查询" : "在线搜索");
     }
 
 
@@ -192,6 +198,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
         total = totalCount;
         Log.d("SearchActivity", "total:" + total);
 
+        Toast.makeText(this, "这次获取了" + bookList.size(), Toast.LENGTH_SHORT).show();
 
         if (total == 0) {
             Toast.makeText(this, "找不到图书", Toast.LENGTH_SHORT).show();
@@ -203,12 +210,9 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
         //是否允许开启上拉加载更多
         mBookSearchAdapter.setEnableLoadMore(mBookSearchAdapter.getItemCount() < totalCount ? true : false);
 
-        if (start == 0) {
-            mRecyclerView.setAdapter(mBookSearchAdapter);
-            start = start + 1;
-        }
 
-        Log.d("SearchActivity", "start:" + start);
+        mRecyclerView.setAdapter(mBookSearchAdapter);
+
 
     }
 
@@ -220,7 +224,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     @Override
     public void showError(String errorMsg) {
         mBookSearchAdapter.loadMoreFail();
-        Toast.makeText(this, "错误"+errorMsg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "错误" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -234,6 +238,10 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
 
     }
 
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -250,6 +258,5 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 }
