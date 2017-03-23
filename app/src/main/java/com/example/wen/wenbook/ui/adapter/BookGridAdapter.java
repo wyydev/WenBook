@@ -1,6 +1,10 @@
 package com.example.wen.wenbook.ui.adapter;
 
 import android.graphics.Color;
+import android.os.Handler;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -14,12 +18,18 @@ import com.example.wen.wenbook.bean.Book;
 import com.example.wen.wenbook.common.font.WenFont;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import org.litepal.crud.DataSupport;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 /**
  * Created by wen on 2017/3/21.
  */
 
 public class BookGridAdapter extends BaseQuickAdapter<Book,BaseViewHolder> {
+
+    private ImageView mIvCover;
 
     public BookGridAdapter() {
         super(R.layout.fragment_book_grid_item);
@@ -29,13 +39,13 @@ public class BookGridAdapter extends BaseQuickAdapter<Book,BaseViewHolder> {
     protected void convert(BaseViewHolder helper, Book item) {
 
         // 设置图片
-        ImageView ivCover = helper.getView(R.id.iv_cover);
-        Glide.with(ivCover.getContext())
+        mIvCover = helper.getView(R.id.iv_cover);
+        Glide.with(mIvCover.getContext())
                 .load(item.getImage())
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(new IconicsDrawable(ivCover.getContext()).icon(WenFont.Icon.wen_book).color(Color.GRAY).paddingDp(10))
-                .into(ivCover);
+                .placeholder(new IconicsDrawable(mIvCover.getContext()).icon(WenFont.Icon.wen_book).color(Color.GRAY).paddingDp(10))
+                .into(mIvCover);
 
         // 设置其他
 
@@ -51,4 +61,9 @@ public class BookGridAdapter extends BaseQuickAdapter<Book,BaseViewHolder> {
     public long getItemId(int position) {
         return this.mData.get(position).getId();
     }
+
+
+
+
+
 }

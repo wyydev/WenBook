@@ -68,7 +68,6 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     // 图书搜索结果总条数
     private static int total = 10;
 
-    private static int currentCount = 0;
 
     private static int start = 0;
 
@@ -221,7 +220,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     @Override
     public void showError(String errorMsg) {
         mBookSearchAdapter.loadMoreFail();
-        Toast.makeText(this, "errorMsg", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "错误"+errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

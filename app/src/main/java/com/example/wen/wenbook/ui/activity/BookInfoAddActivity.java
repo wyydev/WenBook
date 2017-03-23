@@ -23,6 +23,7 @@ import com.example.wen.wenbook.di.module.AddBookModule;
 import com.example.wen.wenbook.presenter.contract.AddBookContract;
 import com.example.wen.wenbook.presenter.impl.AddBookPresenter;
 import com.example.wen.wenbook.ui.fragment.BookInfoFragment;
+import com.example.wen.wenbook.ui.fragment.BookIntroFragment;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.litepal.crud.DataSupport;
@@ -137,7 +138,8 @@ public class BookInfoAddActivity extends BaseActivity<AddBookPresenter> implemen
         fragments.add(BookInfoFragment.newInstance(book));
 
         // 图书简介 Fragment
-        fragments.add(BookInfoFragment.newInstance(book));
+        fragments.add(BookIntroFragment.newInstance(book));
+
         final List<String> titles = new ArrayList<>(2);
         titles.add("基本信息");
         titles.add("图书简介");
@@ -186,6 +188,8 @@ public class BookInfoAddActivity extends BaseActivity<AddBookPresenter> implemen
     @Override
     public void showError(String errorMsg) {
         Toast.makeText(this, "图书不存在或网络连接错误："+errorMsg, Toast.LENGTH_SHORT).show();
+        mErrorTextView.setText("图书不存在或网络连接错误："+errorMsg);
+        mErrorTextView.setVisibility(View.VISIBLE);
     }
 
 

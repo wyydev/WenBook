@@ -13,6 +13,10 @@
     <color name="book_info_bg">@color/colorPrimaryBg</color>
     <color name="colorPrimaryBg">#ffffff</color>
 
+    <!-- 图书简介信息 Fragment -->
+    <color name="book_intro_tag_font">@color/colorPrimary</color>
+    <color name="book_intro_font">@color/colorPrimaryContentFont</color>
+
     <!-- 内容字体 -->
     <color name="colorPrimaryContentFont">#444444</color>
     <color name="colorPrimaryContentBg">#f8f8f8</color>
@@ -27,6 +31,9 @@
 
     <!-- 图书添加页 -->
     <color name="btn_color">@color/colorPrimary</color>
+
+    <!-- 图书封面 -->
+    <color name="boo_cover_icon">#bcbcbc</color>
 
     <!-- 悬浮按钮 -->
     <color name="fab_menu_colorNormal">@color/colorPrimary</color>

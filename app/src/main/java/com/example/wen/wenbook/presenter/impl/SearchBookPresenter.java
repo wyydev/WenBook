@@ -48,6 +48,7 @@ public class SearchBookPresenter extends BasePresenter<SearchBookContract.ISearc
                         byte[] bs = bookName.getBytes();
                         // 用新的字符编码生成字符串
                         bookName = new String(bs, "UTF-8");
+
                     }
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();

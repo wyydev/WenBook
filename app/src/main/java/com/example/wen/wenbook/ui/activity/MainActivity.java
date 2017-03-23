@@ -1,13 +1,16 @@
 package com.example.wen.wenbook.ui.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity<LoginPresenter> implements LonginContract.LoginView{
+public class MainActivity extends BaseActivity<LoginPresenter> implements LonginContract.LoginView,NavigationView.OnNavigationItemSelectedListener{
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -109,12 +112,14 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
 
     private void initDrawerLayout() {
 
+        //headerView
         headerView = mNavigationView.getHeaderView(0);
 
         mUserHeadView = (ImageView) headerView.findViewById(R.id.img_account);
         mUserHeadView.setImageDrawable(new IconicsDrawable(this, WenFont.Icon.wen_user).colorRes(R.color.white));
         mTextUserName = (TextView) headerView.findViewById(R.id.txt_username);
 
+        //headerView点击
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,12 +127,15 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
             }
         });
 
+        //设置侧拉菜单icon
         mNavigationView.getMenu().findItem(R.id.menu_scanning).setIcon(new IconicsDrawable(this, WenFont.Icon.wen_scanner));
         mNavigationView.getMenu().findItem(R.id.menu_search_online).setIcon(new IconicsDrawable(this, WenFont.Icon.wen_search));
         mNavigationView.getMenu().findItem(R.id.menu_search_local).setIcon(new IconicsDrawable(this, WenFont.Icon.wen_add));
         mNavigationView.getMenu().findItem(R.id.menu_about).setIcon(new IconicsDrawable(this, WenFont.Icon.wen_book));
         mNavigationView.getMenu().findItem(R.id.menu_logout).setIcon(new IconicsDrawable(this, WenFont.Icon.wen_shutdown));
 
+        //item点击
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         // 右下角浮动菜单
         mFabMenu.setClosedOnTouchOutside(true);
@@ -189,6 +197,45 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
 
     @Override
     public void showError(String errorMsg) {
-        Toast.makeText(this,errorMsg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"错误："+errorMsg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+
+            case R.id.menu_scanning: //扫一扫
+                break;
+
+            case R.id.menu_search_online: //在线搜索
+                Intent intent2 = new Intent(MainActivity.this, SearchActivity.class);
+                intent2.putExtra("search_type", SearchActivity.SEARCH_NET);
+                startActivity(intent2);
+                break;
+
+            case R.id.menu_search_local: //本地查询
+                Intent intent3 = new Intent(MainActivity.this, SearchActivity.class);
+                intent3.putExtra("search_type", SearchActivity.SEARCH_LOCAL);
+                startActivity(intent3);
+                break;
+
+            case R.id.menu_about: //关于
+                break;
+
+            case R.id.menu_logout: //退出登录
+                break;
+        }
+       // mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        //处理返回键逻辑 若侧拉面板打开返回键首先关闭侧拉面板
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

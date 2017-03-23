@@ -4,6 +4,7 @@ import com.example.wen.wenbook.di.module.AddBookModule;
 import com.example.wen.wenbook.di.module.SearchBookModule;
 import com.example.wen.wenbook.di.scope.ActivityScope;
 import com.example.wen.wenbook.ui.activity.BookInfoAddActivity;
+import com.example.wen.wenbook.ui.activity.BookInfoAddActivity2;
 import com.example.wen.wenbook.ui.activity.SearchActivity;
 
 import dagger.Component;
@@ -16,4 +17,5 @@ import dagger.Component;
 @Component(modules = AddBookModule.class,dependencies = AppComponent.class)
 public interface AddBookComponent {
     void inject(BookInfoAddActivity bookInfoAddActivity);
+    void inject2(BookInfoAddActivity2 bookInfoAddActivity2);
 }

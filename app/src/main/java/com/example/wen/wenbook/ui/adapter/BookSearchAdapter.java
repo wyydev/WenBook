@@ -14,6 +14,7 @@ import com.example.wen.wenbook.bean.Book;
 import com.example.wen.wenbook.common.font.WenFont;
 import com.example.wen.wenbook.ui.activity.BookInfoActivity;
 import com.example.wen.wenbook.ui.activity.BookInfoAddActivity;
+import com.example.wen.wenbook.ui.activity.BookInfoAddActivity2;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import org.litepal.crud.DataSupport;
@@ -78,7 +79,7 @@ public class BookSearchAdapter extends BaseQuickAdapter<Book,BaseViewHolder>{
                     mContext.startActivity(intent);
                 } else {
                     // 图书未添加，跳转到添加页面
-                    Intent intent = new Intent(mContext, BookInfoAddActivity.class);
+                    Intent intent = new Intent(mContext, BookInfoAddActivity2.class);
                     intent.putExtra("ISBN", item.getIsbn13());
                     mContext.startActivity(intent);
                 }
