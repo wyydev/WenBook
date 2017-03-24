@@ -31,6 +31,9 @@ import butterknife.ButterKnife;
 
 public class BookAddFragment extends Fragment {
 
+    public static final int WITH_NOTE = 1;
+    public static final int NO_NOTE = 2;
+
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)
@@ -40,10 +43,13 @@ public class BookAddFragment extends Fragment {
 
     private Book mBook;
 
-    public static BookAddFragment newInstance(Book book) {
+    private int type = NO_NOTE;
+
+    public static BookAddFragment newInstance(Book book,int type) {
 
         Bundle args = new Bundle();
         args.putSerializable("book",book);
+        args.putInt("type",type);
         BookAddFragment fragment = new BookAddFragment();
         fragment.setArguments(args);
         return fragment;
@@ -57,6 +63,7 @@ public class BookAddFragment extends Fragment {
 
         if (getArguments() != null){
            mBook = (Book) getArguments().getSerializable("book");
+            type = getArguments().getInt("type",NO_NOTE);
         }
 
         // 设置保存按钮监听器
@@ -67,6 +74,9 @@ public class BookAddFragment extends Fragment {
             }
         });
 
+        mBtnAdd.setVisibility(type == NO_NOTE ?View.VISIBLE :View.GONE);
+
+
         initViewPager();
 
 
@@ -75,7 +85,7 @@ public class BookAddFragment extends Fragment {
 
     private void initViewPager() {
 
-        final List<Fragment> fragments = new ArrayList<>(2);
+        final List<Fragment> fragments = new ArrayList<>();
 
         // 基本信息 Fragment
         fragments.add(BookInfoFragment.newInstance(mBook));
@@ -83,9 +93,17 @@ public class BookAddFragment extends Fragment {
         // 图书简介 Fragment
         fragments.add(BookIntroFragment.newInstance(mBook));
 
-        final List<String> titles = new ArrayList<>(2);
+        final List<String> titles = new ArrayList<>();
         titles.add("基本信息");
         titles.add("图书简介");
+
+
+        if (type == WITH_NOTE){
+            fragments.add(new BookNoteFragment());
+            titles.add("笔记");
+        }
+
+
 
         // PagerAdapter
         FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {

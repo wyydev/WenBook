@@ -122,7 +122,7 @@ public class BookInfoAddActivity2 extends BaseActivity<AddBookPresenter> impleme
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        fragmentTransaction.replace(R.id.contentPanel, BookAddFragment.newInstance(book));
+        fragmentTransaction.replace(R.id.contentPanel, BookAddFragment.newInstance(book,BookAddFragment.NO_NOTE));
 
         fragmentTransaction.commit();
 

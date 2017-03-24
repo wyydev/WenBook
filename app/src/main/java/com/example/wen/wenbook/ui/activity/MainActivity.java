@@ -1,10 +1,14 @@
 package com.example.wen.wenbook.ui.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -61,6 +65,7 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
     private ImageView mUserHeadView;
     private TextView mTextUserName;
     private List<Fragment> mFragmentList;
+    private static final int ZXING_CAMERA_PERMISSION = 1;
 
 
 
@@ -147,14 +152,14 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
             @Override
             public void onClick(View view) {
                 mFabMenu.close(true);
-          /*      if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
+                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
                 } else {
                     Intent intent = new Intent(MainActivity.this, ScanningActivity.class);
                     startActivity(intent);
-                }*/
+                }
 
             }
         });
@@ -205,6 +210,16 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
         switch(item.getItemId()){
 
             case R.id.menu_scanning: //扫一扫
+
+                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, ScanningActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
 
             case R.id.menu_search_online: //在线搜索
@@ -236,6 +251,21 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case ZXING_CAMERA_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(this, ScanningActivity.class);
+                    startActivity(intent);
+
+                } else {
+                    Toast.makeText(this, "使用该功能前需要开启相机权限", Toast.LENGTH_SHORT).show();
+                }
+                return;
         }
     }
 }
