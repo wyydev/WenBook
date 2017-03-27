@@ -99,7 +99,7 @@ public class BookAddFragment extends Fragment {
 
 
         if (type == WITH_NOTE){
-            fragments.add(new BookNoteFragment());
+            fragments.add(BookNoteFragment.newInstance(mBook.getIsbn13()));
             titles.add("笔记");
         }
 

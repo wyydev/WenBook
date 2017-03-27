@@ -116,7 +116,7 @@ public class BookInfoAddActivity2 extends BaseActivity<AddBookPresenter> impleme
         mRbCoverRate.setRating((Float.parseFloat(book.getAverage()) / 2));
 
         // Activity标题
-        mCollapsingToolbar.setTitle(book.getTitle());
+       mCollapsingToolbar.setTitle(book.getTitle());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -156,5 +156,12 @@ public class BookInfoAddActivity2 extends BaseActivity<AddBookPresenter> impleme
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        finish();
+
     }
 }

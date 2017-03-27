@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="5dp"
+              android:layout_marginRight="5dp"
+              android:layout_marginTop="5dp"
+              android:gravity="center"
+              android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginRight="5dp">
+        <TextView
+            android:id="@+id/tv_book_note_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="我是笔记正文内容缩略简介现在还没有数据，我只是在补够六十字看看效果"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:layout_marginBottom="3dp"/>
+        <TextView
+            android:id="@+id/tv_book_note_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3月27日"
+            android:textColor="@android:color/darker_gray"
+            android:lines="1"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_book_note"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"/>
+
+</LinearLayout>

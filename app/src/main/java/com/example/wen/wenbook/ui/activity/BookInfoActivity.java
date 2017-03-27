@@ -98,7 +98,7 @@ public class BookInfoActivity extends AppCompatActivity {
         }
 
 
-        mCollapsingToolbar.setTitle("图书详情");
+       mCollapsingToolbar.setTitle("图书详情");
 
         // 图书ID
         int bookId = getIntent().getIntExtra("id", -1);
@@ -199,6 +199,7 @@ public class BookInfoActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             startActivity(new Intent(this, MainActivity.class));
+            this.finish();
             return true;
         } else {
             return super.onKeyDown(keyCode, event);

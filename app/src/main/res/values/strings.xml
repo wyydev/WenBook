@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WenBook</string>
+    <string name="app_name">搜书</string>
     <string name="scanning">扫一扫</string>
     <string name="search_online">在线搜索</string>
     <string name="search_local">本地查询</string>

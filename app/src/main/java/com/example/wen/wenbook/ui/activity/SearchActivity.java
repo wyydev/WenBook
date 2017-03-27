@@ -1,12 +1,10 @@
 package com.example.wen.wenbook.ui.activity;
 
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +33,6 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -196,9 +193,9 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     public void showResult(final List<Book> bookList, int totalCount) {
 
         total = totalCount;
-        Log.d("SearchActivity", "total:" + total);
+      //  Log.d("SearchActivity", "total:" + total);
 
-        Toast.makeText(this, "这次获取了" + bookList.size(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "这次获取了" + bookList.size(), Toast.LENGTH_SHORT).show();
 
         if (total == 0) {
             Toast.makeText(this, "找不到图书", Toast.LENGTH_SHORT).show();

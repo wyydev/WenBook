@@ -37,6 +37,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import org.litepal.tablemanager.Connector;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +87,8 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
         initTabLayout();
 
 
-
+        //创建数据库
+        Connector.getDatabase();
 
     }
 
@@ -250,7 +253,7 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+           this.finish();
         }
     }
 
