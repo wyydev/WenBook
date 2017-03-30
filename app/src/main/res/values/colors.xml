@@ -8,7 +8,9 @@
     <color name="grid_empty_icon">#bcbcbc</color>
     <color name="grid_empty_text">#bcbcbc</color>
     <color name="grid_rate_text">@color/colorPrimaryContentFont</color>
-
+    <!--Tab-->
+    <color name="tab_normal">#aafafafa</color>
+    <color name="tab_select">@color/white</color>
     <!-- 图书详情 -->
     <color name="book_info_bg">@color/colorPrimaryBg</color>
     <color name="colorPrimaryBg">#ffffff</color>

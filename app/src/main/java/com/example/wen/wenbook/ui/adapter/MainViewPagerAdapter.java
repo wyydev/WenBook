@@ -43,7 +43,7 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     private void initTitle(){
         titles.add("发现");
-        titles.add("全部");
+        titles.add("书柜");
         titles.add("收藏");
         titles.add("休闲");
     }

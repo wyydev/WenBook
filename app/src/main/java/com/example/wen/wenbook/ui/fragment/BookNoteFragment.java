@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
@@ -126,6 +127,7 @@ public class BookNoteFragment extends Fragment implements View.OnClickListener{
         //添加新数据
         mBookNoteListAdapter.setNewData(mBookNoteBeen);
 
+     /*   mBookNoteListAdapter.notifyDataSetChanged();*/
     }
 
 
@@ -266,7 +268,7 @@ public class BookNoteFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-
+        Toast.makeText(getActivity(), "onResume", Toast.LENGTH_SHORT).show();
         fetchData();
         mBookNoteListAdapter.notifyDataSetChanged();
     }

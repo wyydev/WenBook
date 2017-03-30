@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.example.wen.wenbook.ui.activity.SplashActivity">
+
+    <com.eftimoff.androipathview.PathView
+        android:id="@+id/pathView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:pathColor="@android:color/white"
+        android:layout_centerInParent="true"
+        app:svg="@raw/book2"
+        app:pathWidth="5dp"/>
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pathView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/app_name"
+        android:textSize="30dp"
+        android:textColor="@android:color/white"/>
+
+
+</RelativeLayout>

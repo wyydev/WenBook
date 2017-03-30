@@ -1,5 +1,6 @@
 package com.example.wen.wenbook.ui.activity;
 
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -58,6 +60,10 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     SwipeRefreshLayout mSwipeRefrshLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.error_text_view)
+    TextView mErrorTextView;
+    @BindView(R.id.ErrorView)
+    RelativeLayout mErrorView;
 
 
     private int search_type = SEARCH_LOCAL;
@@ -105,7 +111,6 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
                 return false;
             }
         });
-
 
 
         mSwipeRefrshLayout.setColorSchemeResources(R.color.google_blue, R.color.google_red, R.color.google_green, R.color.google_yellow);
@@ -193,9 +198,9 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     public void showResult(final List<Book> bookList, int totalCount) {
 
         total = totalCount;
-      //  Log.d("SearchActivity", "total:" + total);
+        //  Log.d("SearchActivity", "total:" + total);
 
-       // Toast.makeText(this, "这次获取了" + bookList.size(), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "这次获取了" + bookList.size(), Toast.LENGTH_SHORT).show();
 
         if (total == 0) {
             Toast.makeText(this, "找不到图书", Toast.LENGTH_SHORT).show();
@@ -221,6 +226,15 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     @Override
     public void showError(String errorMsg) {
         mBookSearchAdapter.loadMoreFail();
+        mErrorView.setVisibility(View.VISIBLE);
+        mErrorTextView.setText("出错啦，点我重试");
+        mErrorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+                mErrorView.setVisibility(View.GONE);
+            }
+        });
         Toast.makeText(this, "错误" + errorMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -256,4 +270,10 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

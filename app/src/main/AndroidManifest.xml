@@ -20,11 +20,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity android:name=".ui.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".ui.activity.SearchActivity"/>
         <activity
@@ -36,6 +32,15 @@
         <activity android:name=".ui.activity.BookInfoAddActivity2"/>
         <activity android:name=".ui.activity.ScanningActivity"/>
         <activity android:name=".ui.activity.BookNoteActivity">
+        </activity>
+        <activity android:name=".ui.activity.SplashActivity"
+            android:theme="@style/AppTheme.NoTitle.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
         </activity>
     </application>
 
