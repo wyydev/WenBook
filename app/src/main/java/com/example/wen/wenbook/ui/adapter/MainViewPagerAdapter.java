@@ -4,11 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.wen.wenbook.bean.FragmentInfo;
-import com.example.wen.wenbook.ui.fragment.BookCollectFragment;
-import com.example.wen.wenbook.ui.fragment.BookCoverFragment;
-import com.example.wen.wenbook.ui.fragment.DiscoverFragment;
-import com.example.wen.wenbook.ui.fragment.RelaxFragment;
 
 import java.util.ArrayList;
 import java.util.List;

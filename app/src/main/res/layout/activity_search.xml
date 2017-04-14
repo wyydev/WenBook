@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:theme="@style/AppTheme.ToolBar"
+        app:theme="@style/AppTheme.AppBarOverlay"
         app:title="搜索"/>
 
     <LinearLayout

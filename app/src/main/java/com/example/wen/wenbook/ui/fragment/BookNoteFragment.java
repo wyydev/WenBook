@@ -268,7 +268,6 @@ public class BookNoteFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getActivity(), "onResume", Toast.LENGTH_SHORT).show();
         fetchData();
         mBookNoteListAdapter.notifyDataSetChanged();
     }

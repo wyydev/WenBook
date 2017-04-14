@@ -3,6 +3,8 @@ package com.example.wen.wenbook.data.http;
 import com.example.wen.wenbook.bean.Book;
 import com.example.wen.wenbook.bean.DoubanBook;
 import com.example.wen.wenbook.bean.DoubanBookBean;
+import com.example.wen.wenbook.bean.GankDate;
+import com.example.wen.wenbook.bean.TodayGank;
 import com.example.wen.wenbook.bean.WeChatToken;
 import com.example.wen.wenbook.bean.WeChatUser;
 
@@ -36,5 +38,9 @@ public interface ApiService {
     @GET("isbn/{isbn}")
     Observable<DoubanBook> searchBookFromIsbn(@Path("isbn") String isbn);
 
+    @GET("http://gank.io/api/day/{year}/{month}/{day}")
+    Observable<TodayGank> todayGank(@Path("year") String year, @Path("month") String month, @Path("day") String day);
 
+    @GET("http://gank.io/api/day/history")
+    Observable<GankDate> gankDate();
 }

@@ -37,7 +37,6 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.iconics.IconicsDrawable;
 
-import org.litepal.tablemanager.Connector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,9 +86,6 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
         initTabLayout();
 
 
-        //创建数据库
-        Connector.getDatabase();
-
     }
 
     private void initFragment() {
@@ -114,6 +110,29 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
     private void initTabLayout() {
 
         MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager(),mFragmentList);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0 || position == 3){
+                    mFabMenu.setVisibility(View.GONE);
+                }else {
+                    mFabMenu.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
@@ -178,6 +197,8 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
                 startActivity(intent);
             }
         });
+
+        mFabMenu.setVisibility(View.GONE);
 
 
         //drawerLayout 与 Toolbar 整合

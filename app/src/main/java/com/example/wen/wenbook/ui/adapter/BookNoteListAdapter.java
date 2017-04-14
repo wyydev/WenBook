@@ -49,6 +49,8 @@ public class BookNoteListAdapter extends BaseQuickAdapter<BookNoteBean,BaseViewH
                     break;
                 }
             }
+        }else {
+            imagePath = null;
         }
 
 
@@ -75,6 +77,8 @@ public class BookNoteListAdapter extends BaseQuickAdapter<BookNoteBean,BaseViewH
                     break;
                 }
             }
+        }else {
+            mContent = "";
         }
 
 

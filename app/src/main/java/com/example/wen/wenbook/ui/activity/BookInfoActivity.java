@@ -1,7 +1,9 @@
 package com.example.wen.wenbook.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -22,9 +25,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.FutureTarget;
 import com.example.wen.wenbook.R;
 import com.example.wen.wenbook.bean.Book;
 import com.example.wen.wenbook.common.font.WenFont;
@@ -35,9 +40,14 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
+import java.util.concurrent.ExecutionException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
@@ -161,6 +171,7 @@ public class BookInfoActivity extends AppCompatActivity {
                 this.finish();
                 return true;
             case R.id.action_favorite:
+                //修改数据库中是否收藏字段值
                 book.setFavourite(!book.isFavourite());
                 book.save();
                 invalidateOptionsMenu();
@@ -170,6 +181,11 @@ public class BookInfoActivity extends AppCompatActivity {
                         .setConfirmText("确定")
                         .show();
                 return true;
+            case R.id.action_shared:
+
+                share();
+
+                return true;
             case R.id.action_browser:
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(book.getAlt()));
@@ -177,6 +193,98 @@ public class BookInfoActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void share() {
+        String[] strings = new String[]{"分享文本","分享图片"};
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("选择分享类型")
+                .setSingleChoiceItems(strings, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        switch (which){
+                            case 0:
+                                shareText();
+                                break;
+
+                            case 1:
+                                sharePicture();
+                                break;
+
+                        }
+
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        alertDialog.show();
+
+    }
+
+    private void sharePicture() {
+
+        new DownloadTask().execute();
+
+    }
+
+    private void shareText() {
+
+        //构建分享的文字内容
+        String title = book.getTitle();
+        String summary = "";
+        if (TextUtils.isEmpty(book.getSummary())){
+            summary = "我觉得这本书很不错";
+        }else {
+            summary = book.getSummary();
+        }
+
+        String link = "点击下面链接查看书本详情\n" + book.getAlt();
+
+        String shareText = title +"\n"+summary+"\n" + link;
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT,shareText);
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent,"分享到"));
+
+    }
+
+
+    class DownloadTask extends AsyncTask<Void,Void,File>{
+
+        @Override
+        protected File doInBackground(Void... params) {
+            FutureTarget<File> fileFutureTarget = Glide.with(BookInfoActivity.this)
+                    .load(book.getImage())
+                    .downloadOnly(250, 250);
+            try {
+                File file = fileFutureTarget.get();
+                return file;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                return null;
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+
+            if (file != null){
+                Uri uri = Uri.fromFile(file);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM,uri);
+                intent.setType("image/*");
+                startActivity(Intent.createChooser(intent,"分享到"));
+            }else {
+                Toast.makeText(BookInfoActivity.this,"下载图书封面失败",Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 

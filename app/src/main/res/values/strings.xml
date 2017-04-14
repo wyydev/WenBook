@@ -13,4 +13,13 @@
     <string name="menu_more">更多选项</string>
     <string name="toggle_flash">太暗了？点我</string>
     <string name="scanning_title">ISBN扫描</string>
+    <string name="empty_text">点击重新加载...</string>
+    <string name="error_http_400">bad request</string>
+    <string name="error_http_404">服务器资源找不到</string>
+    <string name="error_http_500">服务器错误</string>
+    <string name="error_socket_timeout">网络超时</string>
+    <string name="error_socket_unreachable">网络不可用</string>
+    <string name="error_unkown">未知错误</string>
+    <string name="error_http">网络连接错误</string>
+    <string name="load_error">加载失败，点击重试...</string>
 </resources>

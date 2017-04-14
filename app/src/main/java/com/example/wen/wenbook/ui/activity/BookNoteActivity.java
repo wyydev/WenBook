@@ -1,7 +1,6 @@
 package com.example.wen.wenbook.ui.activity;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
@@ -64,7 +64,7 @@ public class BookNoteActivity extends AppCompatActivity {
 
 
 
-    //根据book_note_id返回一个带crimeId的Intent,用于确定某个具体的book_note
+    //根据book_note_id返回一个带book_note_Id的Intent,用于确定某个具体的book_note
     public static Intent newIntent(Context packageContext, String book_note_id,String isbn) {
         Intent intent = new Intent(packageContext, BookNoteActivity.class);
         intent.putExtra(EXTRA_BOOK_NOTE_ID, book_note_id);
@@ -93,7 +93,7 @@ public class BookNoteActivity extends AppCompatActivity {
 
         setSupportActionBar(mToolbar);
 
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("");
@@ -121,6 +121,8 @@ public class BookNoteActivity extends AppCompatActivity {
         if (bookNoteBeen.size() > 0){
             Log.d("BookNoteActivity","回显时获取笔记的数目："+bookNoteBeen.size());
             mBookNoteBean = bookNoteBeen.get(0);
+        }else {
+            mBookNoteBean = null;
         }
 
 

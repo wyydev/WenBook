@@ -254,14 +254,14 @@ public class BookGridFragment extends BaseFragment {
     public void fetchData() {
         Log.d("wen", type + "GridFragment.fetchData");
         if (type == TYPE_FAVORITE) {
-            //查找数据库中的所有数据
+            //查找数据库中的所有已收藏图书
             List<Book> bookList = DataSupport.where("favourite = ?", "1").order("id desc").find(Book.class);
 
             //添加新数据
             bookGridAdapter.setNewData(bookList);
 
         } else {
-            //查找数据库中的所有数据
+            //查找数据库中的所有图书
             List<Book> bookList = DataSupport.order("id desc").find(Book.class);
 
             //添加新数据

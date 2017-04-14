@@ -65,7 +65,6 @@ public class SearchBookPresenter extends BasePresenter<SearchBookContract.ISearc
                     @Override
                     public void onNext(List<Book> bookList) {
                         mView.dismissLoading();
-
                         Log.d("SearchBookPresenter",bookList.toString());
                             if (bookList != null){
                                 mView.showResult(bookList,bookList.size());
@@ -148,8 +147,6 @@ public class SearchBookPresenter extends BasePresenter<SearchBookContract.ISearc
                                 if (value != null){
                                     mView.showResult(BookUtils.parseAll(value.getBooks()),value.getTotal());
                                 }
-
-
                             }
 
                             @Override
@@ -164,7 +161,6 @@ public class SearchBookPresenter extends BasePresenter<SearchBookContract.ISearc
                             public void onComplete() {
                                 if (start == 0)
                                 mView.dismissLoading();
-
                                 mView.onLoadMoreComplete();
                             }
                         });
