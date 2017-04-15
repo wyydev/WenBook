@@ -31,7 +31,6 @@ public abstract class ErrorHandleSubscriber<T> extends DefaultSubscriber<T> {
             e.printStackTrace();
         }else {
             mErrorHandler.showErrorMessage(baseException);
-
         }
 
     }

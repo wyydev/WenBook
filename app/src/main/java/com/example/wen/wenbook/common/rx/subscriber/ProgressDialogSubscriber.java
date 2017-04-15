@@ -2,6 +2,7 @@ package com.example.wen.wenbook.common.rx.subscriber;
 
 import android.content.Context;
 
+import com.example.wen.wenbook.common.exception.BaseException;
 import com.example.wen.wenbook.presenter.BaseView;
 
 import io.reactivex.disposables.Disposable;
@@ -39,10 +40,13 @@ public abstract class ProgressDialogSubscriber<T> extends ErrorHandleSubscriber<
 
     @Override
     public void onError(Throwable e) {
-        super.onError(e);
+
         if (isShowProgressDialog()){
             dismissProgressDialog();
         }
+        BaseException baseException = mErrorHandler.handleError(e);
+
+        mBaseView.showError(baseException.getMsg());
     }
 
     @Override

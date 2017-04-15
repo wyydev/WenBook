@@ -300,6 +300,9 @@ public class BookInfoActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.action_favorite);
         menuItem.setIcon(iconFavorite[book.isFavourite() ? 1 : 0]);
+
+        // Activity标题
+        mToolbar.setTitle(book.getTitle());
         return super.onPrepareOptionsMenu(menu);
     }
 

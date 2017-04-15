@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +28,7 @@ import com.example.wen.wenbook.common.util.CameraUtils;
 import com.example.wen.wenbook.ui.widget.RichEditor;
 
 import org.litepal.crud.DataSupport;
+import org.litepal.crud.callback.SaveCallback;
 import org.litepal.crud.callback.UpdateOrDeleteCallback;
 
 import java.util.ArrayList;
@@ -151,7 +153,7 @@ public class BookNoteActivity extends AppCompatActivity {
             mBookNoteBean = new BookNoteBean(mUUID);
             mBookNoteBean.setIsbn(isbn);
             //保存到数据库
-            mBookNoteBean.save();
+         //   mBookNoteBean.save();
         }
 
 
@@ -251,14 +253,25 @@ public class BookNoteActivity extends AppCompatActivity {
         }
 
 
-        if (contents.size() > 0){
+        if (contents.size() > 0 && !TextUtils.isEmpty(s)){
             mBookNoteBean.setNoteContent(contents);
-            mBookNoteBean.updateAllAsync("mNoteId = ?",mUUID).listen(new UpdateOrDeleteCallback() {
+          /*  mBookNoteBean.updateAllAsync("mNoteId = ?",mUUID).listen(new UpdateOrDeleteCallback() {
                 @Override
                 public void onFinish(int rowsAffected) {
                     Toast.makeText(BookNoteActivity.this, "更新了"+rowsAffected, Toast.LENGTH_SHORT).show();
                 }
+            });*/
+
+            mBookNoteBean.saveOrUpdateAsync("mNoteId = ?",mUUID).listen(new SaveCallback() {
+                @Override
+                public void onFinish(boolean success) {
+                    Toast.makeText(BookNoteActivity.this, "操作结果:"+success, Toast.LENGTH_SHORT).show();
+                }
             });
+
+        }else {
+            //笔记没有内容，删除
+            DataSupport.deleteAll(BookNoteBean.class,"mNoteId = ?",mUUID);
         }
 
     }

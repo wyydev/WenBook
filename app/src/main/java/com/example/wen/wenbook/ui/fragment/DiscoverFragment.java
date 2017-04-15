@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.example.wen.wenbook.R;
@@ -19,6 +20,7 @@ import com.example.wen.wenbook.di.module.TodayGankModule;
 import com.example.wen.wenbook.presenter.contract.TodayGankContract;
 import com.example.wen.wenbook.presenter.impl.TodayGankPresenter;
 import com.example.wen.wenbook.ui.activity.GankDateActivity;
+import com.example.wen.wenbook.ui.activity.GankSearchActivity;
 import com.example.wen.wenbook.ui.adapter.TodayGankAdapter;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -65,14 +67,18 @@ public class DiscoverFragment extends ProgressFragment<TodayGankPresenter> imple
 
         initFabMenu();
 
+        getTodayData();
 
-        //获取当天日期
-        Calendar now = Calendar.getInstance();
-        getGankData(now.get(Calendar.YEAR) + "", now.get(Calendar.MONTH) + 1 + "", now.get(Calendar.DAY_OF_MONTH) + "");
+
         mTodayRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
+    }
 
+    private void getTodayData() {
+        //获取当天日期
+        Calendar now = Calendar.getInstance();
+        getGankData(now.get(Calendar.YEAR) + "", now.get(Calendar.MONTH) + 1 + "", now.get(Calendar.DAY_OF_MONTH) + "");
     }
 
     @Override
@@ -127,7 +133,8 @@ public class DiscoverFragment extends ProgressFragment<TodayGankPresenter> imple
             @Override
             public void onClick(View v) {
                 mFabmenu.close(true);
-
+                Intent intent = new Intent(getActivity(), GankSearchActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -141,11 +148,12 @@ public class DiscoverFragment extends ProgressFragment<TodayGankPresenter> imple
     @Override
     public void showResult(TodayGank todayGank) {
 
-        Log.d("DiscoverFragment", todayGank.toString());
+        if(todayGank != null){
+            mTodayGankAdapter = new TodayGankAdapter(todayGank, getActivity());
 
-        mTodayGankAdapter = new TodayGankAdapter(todayGank, getActivity());
+            mTodayRecyclerview.setAdapter(mTodayGankAdapter);
+        }
 
-        mTodayRecyclerview.setAdapter(mTodayGankAdapter);
     }
 
     @Override
@@ -156,7 +164,7 @@ public class DiscoverFragment extends ProgressFragment<TodayGankPresenter> imple
 
     @Override
     public void onEmptyTextClick() {
-
+        getTodayData();
     }
 
     @Override

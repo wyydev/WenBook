@@ -40,7 +40,7 @@ public class TodayGankPresenter extends BasePresenter<TodayGankContract.ITodayGa
                 @Override
                 public void onNext(TodayGank value) {
 
-                    if (value != null){
+                    if (value != null && value.category.size()>0){
                         mACache.put(TEMP_GANK_DATA,new Gson().toJson(value));
                         mView.showResult(value);
                     }else {

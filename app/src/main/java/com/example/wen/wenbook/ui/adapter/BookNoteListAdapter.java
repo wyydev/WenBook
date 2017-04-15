@@ -38,6 +38,8 @@ public class BookNoteListAdapter extends BaseQuickAdapter<BookNoteBean,BaseViewH
     @Override
     protected void convert(BaseViewHolder helper, BookNoteBean item) {
 
+        ImageView noteImage = helper.getView(R.id.img_book_note);
+
         //绑定数据
 
         List<String> noteContent = item.getNoteContent();
@@ -47,6 +49,8 @@ public class BookNoteListAdapter extends BaseQuickAdapter<BookNoteBean,BaseViewH
                 if (content.endsWith(".jpg")){
                     imagePath = content;
                     break;
+                }else {
+                    noteImage.setVisibility(View.GONE);
                 }
             }
         }else {
@@ -54,7 +58,7 @@ public class BookNoteListAdapter extends BaseQuickAdapter<BookNoteBean,BaseViewH
         }
 
 
-        ImageView noteImage = helper.getView(R.id.img_book_note);
+
         noteImage.setVisibility(imagePath == null ? View.GONE : View.VISIBLE);
 
         //加载笔记图片

@@ -200,7 +200,7 @@ public class BookNoteFragment extends Fragment implements View.OnClickListener{
         // 删除全部
         new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("确定删除全部笔记吗")
-                .setContentText("删除后将无法恢复。")
+                .setContentText("删除后将无法恢复")
                 .setConfirmText("确定")
                 .setCancelText("取消")
                 .showCancelButton(true)
@@ -219,7 +219,7 @@ public class BookNoteFragment extends Fragment implements View.OnClickListener{
                         }, 1000);
                         sDialog
                                 .setTitleText("删除成功")
-                                .setContentText("全部图书已被成功删除。")
+                                .setContentText("全部图书已被成功删除")
                                 .setConfirmText("确定")
                                 .showCancelButton(false)
                                 .setConfirmClickListener(null)
@@ -233,7 +233,7 @@ public class BookNoteFragment extends Fragment implements View.OnClickListener{
         // 删除选中
         new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("确定删除这条笔记吗")
-                .setContentText("删除后将无法恢复。")
+                .setContentText("删除后将无法恢复")
                 .setConfirmText("确定")
                 .setCancelText("取消")
                 .showCancelButton(true)
@@ -253,7 +253,7 @@ public class BookNoteFragment extends Fragment implements View.OnClickListener{
 
                         sDialog
                                 .setTitleText("删除成功")
-                                .setContentText("该笔记已被成功删除。")
+                                .setContentText("该笔记已被成功删除")
                                 .setConfirmText("确定")
                                 .showCancelButton(false)
                                 .setConfirmClickListener(null)

@@ -57,7 +57,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     @BindView(R.id.fragment_search_book_recycler)
     RecyclerView mRecyclerView;
     @BindView(R.id.fragment_search_book_swipe)
-    SwipeRefreshLayout mSwipeRefrshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.error_text_view)
@@ -69,6 +69,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     private int search_type = SEARCH_LOCAL;
 
     private String searchBookName = "";
+    private boolean isFirstRequest = true;
 
     private BookSearchAdapter mBookSearchAdapter;
 
@@ -78,6 +79,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     // RecyclerView 线性布局管理器
     private LinearLayoutManager manager;
 
+    private int currentCount = 0;
 
     @Override
     public int setLayoutId() {
@@ -113,8 +115,8 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
         });
 
 
-        mSwipeRefrshLayout.setColorSchemeResources(R.color.google_blue, R.color.google_red, R.color.google_green, R.color.google_yellow);
-        mSwipeRefrshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.google_blue, R.color.google_red, R.color.google_green, R.color.google_yellow);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getData();
@@ -154,6 +156,8 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
 
         if (!mEtSearch.getText().toString().trim().isEmpty()) {
 
+            isFirstRequest = true;
+
             searchBookName = mEtSearch.getText().toString().trim().replace(" ", "\b");
 
             mBookSearchAdapter.getData().clear();
@@ -191,7 +195,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     @Override
     public void dismissLoading() {
         mLoadView.setVisibility(View.GONE);
-        mSwipeRefrshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -206,14 +210,34 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
             Toast.makeText(this, "找不到图书", Toast.LENGTH_SHORT).show();
         }
 
-        mBookSearchAdapter.addData(bookList);
+        if (isFirstRequest){
+            mBookSearchAdapter.addData(bookList);
+
+            //是否允许开启上拉加载更多
+            mBookSearchAdapter.setEnableLoadMore(mBookSearchAdapter.getItemCount() < totalCount);
+
+            mRecyclerView.setAdapter(mBookSearchAdapter);
+
+            currentCount = mBookSearchAdapter.getItemCount();
+        }else {
+            mBookSearchAdapter.addData(bookList);
+
+//是否允许开启上拉加载更多
+            mBookSearchAdapter.setEnableLoadMore(mBookSearchAdapter.getItemCount() < totalCount);
+
+            if (currentCount  > 0 ){
+                mRecyclerView.smoothScrollToPosition(currentCount - 1); //平滑的滑动到新数据的第一条
+            }
+
+            currentCount = mBookSearchAdapter.getData().size();
 
 
-        //是否允许开启上拉加载更多
-        mBookSearchAdapter.setEnableLoadMore(mBookSearchAdapter.getItemCount() < totalCount ? true : false);
+        }
 
 
-        mRecyclerView.setAdapter(mBookSearchAdapter);
+
+
+
 
 
     }
@@ -242,6 +266,7 @@ public class SearchActivity extends BaseActivity<SearchBookPresenter> implements
     public void onLoadMoreRequested() {
 
         if (mBookSearchAdapter.getItemCount() < total) {
+            isFirstRequest = false;
             mPresenter.searchBook(search_type, searchBookName, mBookSearchAdapter.getItemCount());
         } else {
             mBookSearchAdapter.loadMoreEnd();
