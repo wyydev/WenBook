@@ -85,7 +85,6 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
 
         initTabLayout();
 
-
     }
 
     private void initFragment() {
@@ -124,6 +123,7 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
                 }else {
                     mFabMenu.setVisibility(View.VISIBLE);
                 }
+
             }
 
             @Override
@@ -136,6 +136,8 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
+
+
 
     private void initDrawerLayout() {
 
@@ -208,6 +210,8 @@ public class MainActivity extends BaseActivity<LoginPresenter> implements Longin
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
 
     }
+
+
 
     @Override
     public void showUser(WeChatUser user) {

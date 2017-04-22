@@ -1,5 +1,6 @@
 package com.example.wen.wenbook.ui.activity;
 
+import android.content.SharedPreferences;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +18,10 @@ import butterknife.Unbinder;
 
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
 
-    private Unbinder mUnBinder;
-    private MyApplication mMyApplication;
+    protected Unbinder mUnBinder;
+    protected MyApplication mMyApplication;
+    protected SharedPreferences mSharedPreferences;
+    protected SharedPreferences.Editor mEditor;
 
     @Inject
     T mPresenter;
@@ -37,6 +40,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         setUpActivityComponent(mMyApplication.getAppComponent());
 
         mUnBinder = ButterKnife.bind(this);
+
+        mSharedPreferences = getSharedPreferences("config",MODE_PRIVATE);
+
+        mEditor = mSharedPreferences.edit();
 
         init();
     }

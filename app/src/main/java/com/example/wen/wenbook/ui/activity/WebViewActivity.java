@@ -10,6 +10,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -94,7 +96,8 @@ public class WebViewActivity extends AppCompatActivity {
         // access Assets and resources
         settings.setAllowFileAccess(true);
         //zoom page
-        settings.setBuiltInZoomControls(true);
+        settings.setSupportZoom(true);//设定支持缩放
+       // settings.setBuiltInZoomControls(true);
        // settings.setPluginsEnabled(true);
         //set xml dom cache
         settings.setDomStorageEnabled(true);
@@ -141,7 +144,7 @@ public class WebViewActivity extends AppCompatActivity {
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                loadError("错误码："+errorCode+"\n"+"无法以下链接：\n"+failingUrl);
+                loadError("错误码："+errorCode+"\n"+"无法连接以下链接：\n"+failingUrl);
             }
 
         });
@@ -231,5 +234,28 @@ public class WebViewActivity extends AppCompatActivity {
         if (mUnbinder != Unbinder.EMPTY) {
             mUnbinder.unbind();
         }
+
+        if (mWebContent != null) {
+            // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
+            // destory()
+            ViewParent parent = mWebContent.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(mWebContent);
+            }
+
+            mWebContent.stopLoading();
+            // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+            mWebContent.getSettings().setJavaScriptEnabled(false);
+            mWebContent.clearHistory();
+            mWebContent.clearView();
+            mWebContent.removeAllViews();
+
+            try {
+                mWebContent.destroy();
+            } catch (Throwable ex) {
+
+            }
+        }
+
     }
 }

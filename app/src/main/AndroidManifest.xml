@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".ui.activity.MainActivity">
+        <activity android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTask">
         </activity>
         <activity android:name=".ui.activity.SearchActivity"/>
         <activity
@@ -43,7 +44,8 @@
         </activity>
         <activity android:name=".ui.activity.GankDateActivity">
         </activity>
-        <activity android:name=".ui.activity.WebViewActivity">
+        <activity android:name=".ui.activity.WebViewActivity"
+            android:launchMode="singleTask">
         </activity>
         <activity android:name=".ui.activity.GankSearchActivity">
         </activity>

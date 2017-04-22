@@ -14,7 +14,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 public class ImageLoder {
     public static void loadImage(Context context, String imageUrl, ImageView imageView){
-        Glide.with(context).load(imageUrl).placeholder(R.mipmap.ic_launcher)
+        Glide.with(context).load(imageUrl).asBitmap().placeholder(new IconicsDrawable(context, WenFont.Icon.wen_smile).colorRes(R.color.colorPrimary))
                 .error(new IconicsDrawable(context, WenFont.Icon.wen_smile).colorRes(R.color.colorPrimary))
                 .into(imageView);
     }

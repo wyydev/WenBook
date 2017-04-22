@@ -76,6 +76,8 @@ public class BookAddFragment extends Fragment {
 
         mBtnAdd.setVisibility(type == NO_NOTE ?View.VISIBLE :View.GONE);
 
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         initViewPager();
 
